@@ -33,8 +33,9 @@ import { HeaderComponent } from './layout/header/header.component';
 
     @media (max-width: 768px) {
       .app-main {
-        padding: 0;
+        padding: 1.5rem 1rem 3rem;
         margin-top: 80px;
+        padding-top: 2rem;
       }
 
       .app-main:has(.login-container),

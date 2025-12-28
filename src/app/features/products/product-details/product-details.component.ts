@@ -63,10 +63,29 @@ export class ProductDetailsComponent implements OnInit {
         if (selectedProduct) {
           const recs = this.productStore.getStylingRecommendationsFor(selectedProduct);
           this.recommendations.set(recs);
+          // Preload all product images
+          this.preloadImages(selectedProduct.images);
+          // Preload recommendation images
+          recs.forEach(rec => {
+            if (rec.images && rec.images.length > 0) {
+              this.preloadImages(rec.images);
+            }
+          });
         }
         // Scroll to top when route changes
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    });
+  }
+
+  private preloadImages(imageUrls: string[]): void {
+    imageUrls.forEach(url => {
+      const img = new Image();
+      img.src = url;
+      // Optional: Add error handling
+      img.onerror = () => {
+        console.warn(`Failed to preload image: ${url}`);
+      };
     });
   }
 

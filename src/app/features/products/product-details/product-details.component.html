@@ -10,6 +10,8 @@
               [src]="currentProduct.images[currentImageIndex()]"
               [alt]="currentProduct.name"
               class="product-image"
+              loading="eager"
+              fetchpriority="high"
             />
             <div class="zoom-lens" [class.active]="showZoomLens()" [style.left.px]="lensX()" [style.top.px]="lensY()"></div>
             <div class="zoom-result" [class.active]="showZoomLens()" [style.background-image]="'url(' + currentProduct.images[currentImageIndex()] + ')'" [style.background-position]="zoomBackgroundPosition()"></div>
@@ -47,7 +49,7 @@
                   (click)="goToImage($index)"
                   [attr.aria-label]="'View image ' + ($index + 1)"
                 >
-                  <img [src]="image" [alt]="currentProduct.name + ' - Image ' + ($index + 1)" />
+                  <img [src]="image" [alt]="currentProduct.name + ' - Image ' + ($index + 1)" loading="lazy" />
                 </button>
               }
             </div>
@@ -117,7 +119,7 @@
               @for (rec of recommendations(); track rec.id) {
                 <div class="recommendation-card">
                   <a [routerLink]="['/products', rec.id]" class="rec-link" (click)="scrollToTop()">
-                    <img [src]="rec.images[0]" [alt]="rec.name" />
+                    <img [src]="rec.images[0]" [alt]="rec.name" loading="lazy" />
                     <div class="rec-info">
                       <p class="rec-name">{{ rec.name }}</p>
                       <p class="rec-price">{{ rec.price }} EGP</p>

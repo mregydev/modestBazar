@@ -5,10 +5,15 @@
   </div>
 
   <div class="products-grid">
-    @for (product of products(); track product.id) {
+    @for (product of products(); track product.id; let i = $index) {
       <a [routerLink]="['/products', product.id]" class="product-card">
         <div class="product-image">
-          <img [src]="product.images[0]" [alt]="product.name" />
+          <img 
+            [src]="product.images[0]" 
+            [alt]="product.name" 
+            [loading]="i < 4 ? 'eager' : 'lazy'"
+            [attr.fetchpriority]="i < 2 ? 'high' : 'auto'"
+          />
         </div>
         <div class="product-info">
           <p class="product-brand">{{ product.brand }}</p>
