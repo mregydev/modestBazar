@@ -206,19 +206,9 @@
   display: block;
 }
 
-.flag-egypt {
-  background-image: url('https://flagcdn.com/w40/eg.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.flag-uk {
-  background-image: url('https://flagcdn.com/w40/gb.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
+.flag-egypt{background-image:url('https://flagcdn.com/w40/eg.png')}
+.flag-uk{background-image:url('https://flagcdn.com/w40/gb.png')}
+.flag-egypt,.flag-uk{background-size:cover;background-position:center;background-repeat:no-repeat}
 
 .language-dropdown {
   position: absolute;
@@ -262,16 +252,7 @@
   font-weight: 600;
 }
 
-.language-option .flag-icon {
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  display: block;
-}
+.language-option .flag-icon{width:24px;height:24px;flex-shrink:0;border-radius:50%;background-size:cover;background-position:center;background-repeat:no-repeat;display:block}
 
 .language-name {
   flex: 1;
