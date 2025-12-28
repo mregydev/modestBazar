@@ -2,9 +2,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 60vh;
-  padding: 2rem;
+  min-height: calc(100vh - 160px);
+  padding: 2rem 1rem;
   background: linear-gradient(135deg, #faf7f4 0%, #f5f0eb 100%);
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .login-card {
@@ -177,5 +180,27 @@
 
 .social-button svg {
   flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .login-container {
+    min-height: calc(100vh - 160px);
+    padding: 1rem;
+    align-items: flex-start;
+    padding-top: 4rem;
+    margin-top: 0;
+    margin-bottom: 2rem;
+  }
+
+  .login-card {
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    margin: 0 auto;
+    margin-top: 2rem;
+  }
+
+  .login-card h1 {
+    font-size: 1.75rem;
+  }
 }
 

@@ -30,6 +30,11 @@ export class HeaderComponent {
     return url.startsWith('/products/') && url.split('/').length > 2;
   });
 
+  shouldHideSearchBar = computed(() => {
+    const url = this.currentUrl();
+    return this.isProductDetailsPage() || url === '/login' || url === '/signup';
+  });
+
   constructor(
     public authStore: AuthStore,
     private router: Router

@@ -28,6 +28,19 @@ import { HeaderComponent } from './layout/header/header.component';
       padding: 1.5rem 1rem 3rem;
       width: 100%;
       margin-top: 80px;
+      min-height: calc(100vh - 80px);
+    }
+
+    @media (max-width: 768px) {
+      .app-main {
+        padding: 0;
+        margin-top: 80px;
+      }
+
+      .app-main:has(.login-container),
+      .app-main:has(.signup-container) {
+        padding-top: 1rem;
+      }
     }
 
     /* Prevent outer scroll on product details page only (desktop) */

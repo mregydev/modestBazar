@@ -21,8 +21,8 @@
 
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 0.5rem;
+  align-items: center;
+
   text-decoration: none;
   color: #333;
   transition: opacity 0.2s;
@@ -32,38 +32,24 @@
   opacity: 0.8;
 }
 
-.logo-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #b36b3f;
-  box-shadow: 0 2px 8px rgba(179, 107, 63, 0.3);
-  transition: transform 0.2s, box-shadow 0.2s;
+.logo-image {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  display: block;
   flex-shrink: 0;
+  transition: transform 0.2s;
 }
 
-.logo:hover .logo-circle {
+.logo:hover .logo-image {
   transform: scale(1.05);
-  box-shadow: 0 3px 12px rgba(179, 107, 63, 0.4);
-}
-
-.logo-highlight {
-  color: white;
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: -0.02em;
 }
 
 .logo-text {
   font-size: 1.5rem;
   font-weight: 600;
   color: #333;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   letter-spacing: 0.01em;
   line-height: 1;
 }
