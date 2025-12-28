@@ -13,10 +13,19 @@ body {
   color: #333;
 }
 
-/* Prevent body scroll only when product details is active */
+/* Prevent body scroll only when product details is active (desktop) */
 body:has(.product-details) {
   overflow: hidden;
   height: 100vh;
+}
+
+/* Allow body scroll on mobile */
+@media (max-width: 968px) {
+  body:has(.product-details) {
+    overflow: auto;
+    height: auto;
+    min-height: 100vh;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {

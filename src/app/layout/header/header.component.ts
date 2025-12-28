@@ -1,7 +1,8 @@
-import { Component, signal, HostListener } from '@angular/core';
-import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { Component, signal, HostListener, computed } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { filter } from 'rxjs/operators';
 import { AuthStore } from '../../core/state/auth-store.service';
 
 export type Language = 'ar' | 'en';
@@ -17,16 +18,32 @@ export class HeaderComponent {
   searchQuery = signal('');
   currentLanguage = signal<Language>('en');
   showLanguageDropdown = signal(false);
+  currentUrl = signal('');
 
   languages = [
     { code: 'ar' as Language, name: 'العربية', flag: '🇪🇬', flagClass: 'flag-egypt' },
     { code: 'en' as Language, name: 'English', flag: '🇬🇧', flagClass: 'flag-uk' }
   ];
 
+  isProductDetailsPage = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/products/') && url.split('/').length > 2;
+  });
+
   constructor(
     public authStore: AuthStore,
     private router: Router
-  ) {}
+  ) {
+    // Update current URL on navigation
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: any) => {
+        this.currentUrl.set(event.url);
+      });
+
+    // Set initial URL
+    this.currentUrl.set(this.router.url);
+  }
 
   onSearch(): void {
     const query = this.searchQuery().trim();

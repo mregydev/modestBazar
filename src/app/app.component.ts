@@ -30,12 +30,22 @@ import { HeaderComponent } from './layout/header/header.component';
       margin-top: 80px;
     }
 
-    /* Prevent outer scroll on product details page only */
+    /* Prevent outer scroll on product details page only (desktop) */
     .app-main:has(.product-details) {
       overflow: hidden;
       padding: 0 1rem;
       height: calc(100vh - 80px);
       margin-top: 80px;
+    }
+
+    /* Allow scrolling on mobile */
+    @media (max-width: 968px) {
+      .app-main:has(.product-details) {
+        overflow: visible;
+        height: auto;
+        min-height: calc(100vh - 80px);
+        padding: 1.5rem 1rem 3rem;
+      }
     }
   `]
 })

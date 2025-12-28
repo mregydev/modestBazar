@@ -395,13 +395,31 @@
 }
 
 @media (max-width: 968px) {
+  .product-details {
+    overflow: visible;
+    height: auto;
+    min-height: 100%;
+    padding-top: 2rem;
+  }
+
   .product-layout {
     grid-template-columns: 1fr;
     gap: 2rem;
+    overflow: visible;
+    height: auto;
+    min-height: auto;
   }
 
   .product-image-section {
     position: static;
+    max-height: none;
+    margin-top: 1.5rem;
+  }
+
+  .product-info-section {
+    height: auto;
+    overflow: visible;
+    max-height: none;
   }
 
   .recommendations-grid {
