@@ -1,0 +1,86 @@
+<header class="header">
+  <div class="header-content">
+    <a routerLink="/" class="logo">
+      <span class="logo-circle">
+        <span class="logo-highlight">M</span>
+      </span>
+      <span class="logo-text">odestBazar</span>
+    </a>
+
+    <div class="search-bar">
+      <input
+        type="text"
+        placeholder="Search products..."
+        [value]="searchQuery()"
+        (input)="searchQuery.set($any($event.target).value)"
+        (keyup.enter)="onSearch()"
+        class="search-input"
+      />
+      <button type="button" (click)="onSearch()" class="search-button">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M21 21L15 15M17 10C17 13.866 13.866 17 10 17C6.13401 17 3 13.866 3 10C3 6.13401 6.13401 3 10 3C13.866 3 17 6.13401 17 10Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Products</a>
+      @if (authStore.isLoggedIn()) {
+        <a routerLink="/checkout" routerLinkActive="active">Checkout</a>
+      }
+      @if (!authStore.isLoggedIn()) {
+        <div class="header-actions">
+          <a routerLink="/login" class="auth-link">Login</a>
+          <div class="language-selector">
+            <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+              <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
+            </button>
+            @if (showLanguageDropdown()) {
+              <div class="language-dropdown">
+                @for (lang of languages; track lang.code) {
+                  <button
+                    class="language-option"
+                    [class.active]="currentLanguage() === lang.code"
+                    (click)="selectLanguage(lang.code)"
+                    type="button"
+                  >
+                    <span class="flag-icon" [ngClass]="lang.flagClass"></span>
+                    <span class="language-name">{{ lang.name }}</span>
+                  </button>
+                }
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </nav>
+
+    @if (authStore.isLoggedIn()) {
+      <div class="auth-section">
+        <span class="user-greeting">Hi, {{ authStore.user()?.name }}</span>
+        <button class="btn-logout" (click)="authStore.logout()">Logout</button>
+        <div class="language-selector">
+          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+            <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
+          </button>
+          @if (showLanguageDropdown()) {
+            <div class="language-dropdown">
+              @for (lang of languages; track lang.code) {
+                <button
+                  class="language-option"
+                  [class.active]="currentLanguage() === lang.code"
+                  (click)="selectLanguage(lang.code)"
+                  type="button"
+                >
+                  <span class="flag-icon" [ngClass]="lang.flagClass"></span>
+                  <span class="language-name">{{ lang.name }}</span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</header>
+

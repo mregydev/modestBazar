@@ -1,0 +1,33 @@
+<div class="product-list">
+  <div class="header-section">
+    <h1>Curated Modest Pieces</h1>
+    <p class="subtitle">All items are selected for hijabi-friendly, modest cuts, opacity and length.</p>
+  </div>
+
+  <div class="products-grid">
+    @for (product of products(); track product.id) {
+      <a [routerLink]="['/products', product.id]" class="product-card">
+        <div class="product-image">
+          <img [src]="product.images[0]" [alt]="product.name" />
+        </div>
+        <div class="product-info">
+          <p class="product-brand">{{ product.brand }}</p>
+          <h3 class="product-name">{{ product.name }}</h3>
+          <p class="product-price">{{ product.price }} EGP</p>
+          <div class="modesty-badges">
+            @if (product.modestyAttributes.includes('opaque')) {
+              <span class="badge">Opaque</span>
+            }
+            @if (product.modestyAttributes.includes('maxi_length')) {
+              <span class="badge">Maxi Length</span>
+            }
+            @if (product.modestyAttributes.includes('loose_fit')) {
+              <span class="badge">Loose Fit</span>
+            }
+          </div>
+        </div>
+      </a>
+    }
+  </div>
+</div>
+

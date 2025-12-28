@@ -1,0 +1,67 @@
+import { Component, signal, HostListener } from '@angular/core';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AuthStore } from '../../core/state/auth-store.service';
+
+export type Language = 'ar' | 'en';
+
+@Component({
+  selector: 'app-header',
+  standalone: true,
+  imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css'
+})
+export class HeaderComponent {
+  searchQuery = signal('');
+  currentLanguage = signal<Language>('en');
+  showLanguageDropdown = signal(false);
+
+  languages = [
+    { code: 'ar' as Language, name: 'العربية', flag: '🇪🇬', flagClass: 'flag-egypt' },
+    { code: 'en' as Language, name: 'English', flag: '🇬🇧', flagClass: 'flag-uk' }
+  ];
+
+  constructor(
+    public authStore: AuthStore,
+    private router: Router
+  ) {}
+
+  onSearch(): void {
+    const query = this.searchQuery().trim();
+    if (query) {
+      // TODO: Implement search functionality
+      // For now, navigate to products page
+      this.router.navigate(['/']);
+    }
+  }
+
+  selectLanguage(language: Language): void {
+    this.currentLanguage.set(language);
+    this.showLanguageDropdown.set(false);
+    // TODO: Implement language change logic (i18n)
+  }
+
+  getCurrentLanguageFlagClass(): string {
+    const lang = this.languages.find(l => l.code === this.currentLanguage());
+    return lang?.flagClass || 'flag-uk';
+  }
+
+  toggleLanguageDropdown(): void {
+    this.showLanguageDropdown.set(!this.showLanguageDropdown());
+  }
+
+  closeLanguageDropdown(): void {
+    this.showLanguageDropdown.set(false);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.language-selector')) {
+      this.showLanguageDropdown.set(false);
+    }
+  }
+}
+

@@ -1,0 +1,226 @@
+.checkout {
+  padding: 2rem 0;
+}
+
+.checkout h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+}
+
+.order-summary {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.order-summary h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.main-product-card {
+  margin-bottom: 2rem;
+}
+
+.product-summary {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #faf7f4;
+  border-radius: 8px;
+}
+
+.product-summary img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.summary-info {
+  flex: 1;
+}
+
+.summary-info h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.summary-info .brand {
+  font-size: 0.9rem;
+  color: #999;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+}
+
+.summary-info .price {
+  font-size: 1.3rem;
+  color: #b36b3f;
+  font-weight: 600;
+  margin: 0;
+}
+
+.extras-section {
+  margin-bottom: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid #eee;
+}
+
+.extras-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.extra-item {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  background: #faf7f4;
+  border-radius: 8px;
+}
+
+.extra-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.extra-info {
+  flex: 1;
+}
+
+.extra-name {
+  font-size: 1rem;
+  color: #333;
+  margin: 0 0 0.5rem 0;
+  font-weight: 500;
+}
+
+.extra-price {
+  font-size: 1.1rem;
+  color: #b36b3f;
+  font-weight: 600;
+  margin: 0;
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 2px solid #eee;
+}
+
+.total-label {
+  font-size: 1.3rem;
+  color: #333;
+  font-weight: 600;
+  margin: 0;
+}
+
+.total-amount {
+  font-size: 1.8rem;
+  color: #b36b3f;
+  font-weight: 600;
+  margin: 0;
+}
+
+.contact-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: fit-content;
+  position: sticky;
+  top: 100px;
+}
+
+.contact-section h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.contact-description {
+  color: #666;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.contact-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-button {
+  display: block;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: center;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.contact-button.whatsapp {
+  background: #25D366;
+  color: white;
+}
+
+.contact-button.whatsapp:hover {
+  background: #20BA5A;
+}
+
+.contact-button.messenger {
+  background: #0084FF;
+  color: white;
+}
+
+.contact-button.messenger:hover {
+  background: #0073E6;
+}
+
+.no-product {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.no-product p {
+  font-size: 1.2rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.no-product a {
+  color: #b36b3f;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+@media (max-width: 968px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-section {
+    position: static;
+  }
+}
+

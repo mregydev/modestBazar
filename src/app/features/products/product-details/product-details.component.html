@@ -1,0 +1,153 @@
+@if (product(); as currentProduct) {
+  <div class="product-details">
+    <a routerLink="/" class="back-link">← Back to products</a>
+
+    <div class="product-layout">
+      <div class="product-image-section">
+        <div class="image-carousel">
+          <div class="image-zoom-container" (mouseenter)="onImageMouseEnter()" (mousemove)="onImageMouseMove($event)" (mouseleave)="onImageMouseLeave()">
+            <img
+              [src]="currentProduct.images[currentImageIndex()]"
+              [alt]="currentProduct.name"
+              class="product-image"
+            />
+            <div class="zoom-lens" [class.active]="showZoomLens()" [style.left.px]="lensX()" [style.top.px]="lensY()"></div>
+            <div class="zoom-result" [class.active]="showZoomLens()" [style.background-image]="'url(' + currentProduct.images[currentImageIndex()] + ')'" [style.background-position]="zoomBackgroundPosition()"></div>
+
+            @if (currentProduct.images.length > 1) {
+              <button
+                class="carousel-btn prev"
+                (click)="previousImage()"
+                (mouseenter)="onCarouselButtonHover()"
+                aria-label="Previous image"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 18l-6-6 6-6"/>
+                </svg>
+              </button>
+              <button
+                class="carousel-btn next"
+                (click)="nextImage()"
+                (mouseenter)="onCarouselButtonHover()"
+                aria-label="Next image"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 18l6-6-6-6"/>
+                </svg>
+              </button>
+            }
+          </div>
+
+          @if (currentProduct.images.length > 0) {
+            <div class="image-thumbnails">
+              @for (image of currentProduct.images; track $index) {
+                <button
+                  class="thumbnail"
+                  [class.active]="currentImageIndex() === $index"
+                  (click)="goToImage($index)"
+                  [attr.aria-label]="'View image ' + ($index + 1)"
+                >
+                  <img [src]="image" [alt]="currentProduct.name + ' - Image ' + ($index + 1)" />
+                </button>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="product-info-section">
+        <h1 class="product-name">{{ currentProduct.name }}</h1>
+        <p class="product-brand">{{ currentProduct.brand }}</p>
+        <p class="product-price">{{ currentProduct.price }} EGP</p>
+
+        <div class="modesty-attributes">
+          <h3>Modesty Attributes</h3>
+          <div class="modesty-badges">
+            @for (attr of currentProduct.modestyAttributes; track attr) {
+              <span class="modesty-badge">{{ attr.replace('_', ' ') }}</span>
+            }
+          </div>
+        </div>
+
+        <div class="size-section">
+          <h3>Size & Length</h3>
+          <div class="size-guide-formatted">
+            @for (sizeItem of getFormattedSizeGuide(currentProduct.sizeGuide); track sizeItem.size) {
+              <div class="size-item">
+                <span class="size-label">{{ sizeItem.size }}:</span>
+                <span class="size-details">{{ sizeItem.details }}</span>
+              </div>
+            }
+          </div>
+          <div class="size-selector">
+            <label for="size">Select Size:</label>
+            <select id="size" [(ngModel)]="selectedSize" (ngModelChange)="selectedSize.set($event)">
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="color-filter-section">
+          <h3>Filter by Color</h3>
+          <div class="color-filters">
+            @for (color of availableColors(); track color) {
+              <button
+                class="color-filter-btn"
+                [class.active]="selectedColor() === color"
+                [style.background-color]="getColorValue(color)"
+                (click)="selectedColor.set(color)"
+                [title]="color.charAt(0).toUpperCase() + color.slice(1)"
+              ></button>
+            }
+          </div>
+        </div>
+
+        <div class="description-section">
+          <h3>Description</h3>
+          <p>{{ currentProduct.description }}</p>
+        </div>
+
+        <div class="styling-section">
+          <h3>Complete the modest look</h3>
+          @if (recommendations().length > 0) {
+            <div class="recommendations-grid">
+              @for (rec of recommendations(); track rec.id) {
+                <div class="recommendation-card">
+                  <a [routerLink]="['/products', rec.id]" class="rec-link" (click)="scrollToTop()">
+                    <img [src]="rec.images[0]" [alt]="rec.name" />
+                    <div class="rec-info">
+                      <p class="rec-name">{{ rec.name }}</p>
+                      <p class="rec-price">{{ rec.price }} EGP</p>
+                    </div>
+                  </a>
+                  <label class="checkbox-label" (click)="$event.stopPropagation()">
+                    <input
+                      type="checkbox"
+                      [checked]="isExtraSelected(rec.id)"
+                      (change)="toggleExtra(rec.id); $event.stopPropagation()"
+                      (click)="$event.stopPropagation()"
+                    />
+                    Add to my order
+                  </label>
+                </div>
+              }
+            </div>
+          } @else {
+            <p class="no-recommendations">No styling recommendations available for this product.</p>
+          }
+        </div>
+
+        <a routerLink="/checkout" class="checkout-button">Continue to WhatsApp checkout</a>
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="no-product">
+    <p>Product not found</p>
+    <a routerLink="/">Back to products</a>
+  </div>
+}
+
