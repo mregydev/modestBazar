@@ -1,0 +1,111 @@
+@if (store()) {
+  <div class="store-page">
+    <!-- LinkedIn-style Store Header -->
+    <section class="store-header">
+      <div 
+        class="store-banner" 
+        [style.background-image]="'url(' + store()!.bannerImageUrl + ')'"
+      ></div>
+
+      <div class="store-header-content">
+        <div class="store-logo-wrapper">
+          <img 
+            class="store-logo" 
+            [src]="store()!.logoImageUrl" 
+            [alt]="store()!.name" 
+          />
+        </div>
+        <div class="store-info">
+          <h1>{{ store()!.name }}</h1>
+          @if (store()!.description) {
+            <p class="store-description">{{ store()!.description }}</p>
+          }
+        </div>
+      </div>
+
+      <!-- Store Owner Edit Controls -->
+      @if (isOwnerView()) {
+        <div class="store-edit-controls">
+          <button type="button" class="edit-btn" (click)="editBanner()">Edit Banner</button>
+          <button type="button" class="edit-btn" (click)="editLogo()">Edit Logo</button>
+        </div>
+      }
+    </section>
+
+    <!-- Store Products Section with Filters -->
+    <div class="store-page-body">
+      <aside class="filters-column">
+        <app-product-filters
+          [availableFilters]="availableFilters()"
+          [currentFilters]="currentFilters()"
+          [enabledGroups]="store()!.visibleFilters"
+          (filtersChange)="onFiltersChange($event)"
+        ></app-product-filters>
+      </aside>
+
+      <section class="products-column">
+        <div class="products-header">
+          <p class="results-count">
+            @if (filteredProducts().length === 0) {
+              No products found
+            } @else {
+              {{ filteredProducts().length }} {{ filteredProducts().length === 1 ? 'product' : 'products' }} found
+            }
+          </p>
+        </div>
+
+        @if (filteredProducts().length > 0) {
+          <div class="products-grid">
+            @for (product of filteredProducts(); track product.id; let i = $index) {
+              <a [routerLink]="['/products', product.id]" class="product-card">
+                <div class="product-image">
+                  <img 
+                    [src]="product.images[0]" 
+                    [alt]="product.name" 
+                    [loading]="i < 4 ? 'eager' : 'lazy'"
+                    [attr.fetchpriority]="i < 2 ? 'high' : 'auto'"
+                  />
+                </div>
+                <div class="product-info">
+                  <div class="product-header-row">
+                    <p class="product-brand">{{ product.brand }}</p>
+                    @if (product.brand && store()) {
+                      <img 
+                        class="product-store-logo" 
+                        [src]="store()!.logoImageUrl" 
+                        [alt]="store()!.name + ' logo'"
+                      />
+                    }
+                  </div>
+                  <h3 class="product-name">{{ product.name }}</h3>
+                  <p class="product-price">{{ product.price }} EGP</p>
+                  <div class="modesty-badges">
+                    @if (product.modestyAttributes.includes('opaque')) {
+                      <span class="badge">Opaque</span>
+                    }
+                    @if (product.modestyAttributes.includes('maxi_length')) {
+                      <span class="badge">Maxi Length</span>
+                    }
+                    @if (product.modestyAttributes.includes('loose_fit')) {
+                      <span class="badge">Loose Fit</span>
+                    }
+                  </div>
+                </div>
+              </a>
+            }
+          </div>
+        } @else {
+          <div class="empty-state">
+            <p>No products match your filters.</p>
+            <button type="button" class="clear-filters-btn" (click)="onFiltersChange({})">
+              Clear all filters
+            </button>
+          </div>
+        }
+      </section>
+    </div>
+  </div>
+} @else {
+  <div class="loading">Loading store...</div>
+}
+

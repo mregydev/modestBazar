@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs/operators';
 import { AuthStore } from '../../core/state/auth-store.service';
+import { StoreOwnerAuthService } from '../../core/state/store-owner-auth.service';
+import { StoreStore } from '../../core/state/store-store.service';
 
 export type Language = 'ar' | 'en';
 
@@ -37,6 +39,8 @@ export class HeaderComponent {
 
   constructor(
     public authStore: AuthStore,
+    public storeOwnerAuth: StoreOwnerAuthService,
+    private storeStore: StoreStore,
     private router: Router
   ) {
     // Update current URL on navigation
@@ -84,6 +88,18 @@ export class HeaderComponent {
     if (!target.closest('.language-selector')) {
       this.showLanguageDropdown.set(false);
     }
+  }
+
+  getMyStoreSlug(): string | null {
+    const owner = this.storeOwnerAuth.currentOwner();
+    if (!owner) return null;
+    const store = this.storeStore.getStoreById(owner.storeId);
+    return store?.slug || null;
+  }
+
+  onStoreOwnerLogout(): void {
+    this.storeOwnerAuth.logout();
+    this.router.navigate(['/']);
   }
 }
 

@@ -53,4 +53,3 @@ export class CheckoutComponent {
     return 'https://m.me/ModestBazar';
   }
 }
-

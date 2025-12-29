@@ -36,7 +36,6 @@ export class SignupComponent {
     this.error.set('');
     this.isSubmitting.set(true);
 
-    // Simulate delay
     setTimeout(() => {
       this.authStore.signup(nameValue, emailValue, passwordValue);
       this.isSubmitting.set(false);
@@ -45,17 +44,12 @@ export class SignupComponent {
   }
 
   signupWithGoogle(): void {
-    // TODO: Implement Google OAuth integration
-    // For now, simulate signup
     this.authStore.signup('Google User', 'google.user@example.com', 'google');
     this.router.navigate(['/']);
   }
 
   signupWithFacebook(): void {
-    // TODO: Implement Facebook OAuth integration
-    // For now, simulate signup
     this.authStore.signup('Facebook User', 'facebook.user@example.com', 'facebook');
     this.router.navigate(['/']);
   }
 }
-

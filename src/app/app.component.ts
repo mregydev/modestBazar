@@ -31,16 +31,38 @@ import { HeaderComponent } from './layout/header/header.component';
       min-height: calc(100vh - 80px);
     }
 
+    /* Full width for product list page */
+    .app-main:has(.product-list) {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+      margin-top: 80px;
+    }
+
+    /* Full width for store page */
+    .app-main:has(.store-page) {
+      max-width: 100%;
+      padding: 0;
+      margin: 0;
+      margin-top: 80px;
+    }
+
     @media (max-width: 768px) {
       .app-main {
         padding: 1.5rem 1rem 3rem;
-        margin-top: 80px;
-        padding-top: 2rem;
+        margin-top: 0;
+        padding-top: 0;
       }
 
       .app-main:has(.login-container),
       .app-main:has(.signup-container) {
         padding-top: 1rem;
+        margin-top: 80px;
+      }
+
+      .app-main:has(.product-list) {
+        padding: 0;
+        margin-top: 0;
       }
     }
 

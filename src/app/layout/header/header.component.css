@@ -10,13 +10,16 @@
 }
 
 .header-content {
-  max-width: 1024px;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 1rem 1.5rem;
+  padding: 1rem 2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 2rem;
+  height: 80px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .logo {
@@ -265,6 +268,22 @@
   background: #9a5a33;
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(179, 107, 63, 0.3);
+}
+
+
+.store-link {
+  text-decoration: none;
+  color: #b36b3f;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  display: inline-block;
+}
+
+.store-link:hover {
+  background: #f5f5f5;
 }
 
 @media (max-width: 968px) {

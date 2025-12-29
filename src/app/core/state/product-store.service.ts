@@ -19,6 +19,7 @@ export class ProductStore {
       name: 'Olive Loose Abaya',
       brand: 'Abbaya',
       price: 850,
+      storeId: 'store-1',
       images: [
         'https://smyh.wordpress.com/wp-content/uploads/2014/01/cc175o1.jpg',
         'https://png.pngtree.com/png-clipart/20240907/original/pngtree-a-woman-hijab-suit-vector-no-face-for-photo-editing-png-image_15958548.png'
@@ -31,13 +32,26 @@ export class ProductStore {
       stylingRecommendations: [
         { type: 'hijab', productId: 3 },
         { type: 'inner_layer', productId: 4 }
-      ]
+      ],
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['olive'],
+      patternType: 'Solid',
+      material: 'Polyester',
+      occasions: ['Casual', 'Everyday', 'Work'],
+      hijabFriendly: 'yes',
+      sleeveLength: 'long',
+      necklineCoverage: 'high',
+      lengthCategory: 'maxi',
+      fit: 'loose',
+      opacity: 'opaque',
+      slitCoverage: 'noSlit'
     },
     {
       id: 2,
       name: 'Black Wide-Leg Pants',
       brand: 'Hijabi',
       price: 450,
+      storeId: 'store-1',
       images: ['https://static.vecteezy.com/system/resources/previews/035/783/758/non_2x/illustration-of-beautiful-muslim-woman-wearing-hijab-free-vector.jpg'],
       category: 'pants',
       colorFamily: 'black',
@@ -47,13 +61,26 @@ export class ProductStore {
       stylingRecommendations: [
         { type: 'inner_layer', productId: 4 },
         { type: 'hijab', productId: 3 }
-      ]
+      ],
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['black'],
+      patternType: 'Solid',
+      material: 'Cotton',
+      occasions: ['Casual', 'Work', 'Everyday'],
+      hijabFriendly: 'yes',
+      sleeveLength: 'long',
+      necklineCoverage: 'high',
+      lengthCategory: 'maxi',
+      fit: 'loose',
+      opacity: 'opaque',
+      slitCoverage: 'noSlit'
     },
     {
       id: 3,
       name: 'Olive Chiffon Hijab',
       brand: 'Andalusya',
       price: 180,
+      storeId: 'store-1',
       images: ['https://png.pngtree.com/png-clipart/20250123/original/pngtree-colorful-of-syrian-abaya-type-cloak-png-image_19726347.png'],
       category: 'hijab',
       colorFamily: 'olive',
@@ -63,13 +90,26 @@ export class ProductStore {
       stylingRecommendations: [
         { type: 'inner_layer', productId: 4 },
         { type: 'pants', productId: 2 }
-      ]
+      ],
+      sizes: ['One Size'],
+      colors: ['olive'],
+      patternType: 'Solid',
+      material: 'Chiffon',
+      occasions: ['Casual', 'Everyday', 'Work'],
+      hijabFriendly: 'yes',
+      sleeveLength: 'long',
+      necklineCoverage: 'high',
+      lengthCategory: 'maxi',
+      fit: 'regular',
+      opacity: 'opaque',
+      slitCoverage: 'noSlit'
     },
     {
       id: 4,
       name: 'Cream Inner Dress',
       brand: 'Tasneem',
       price: 320,
+      storeId: 'store-2',
       images: ['https://static.vecteezy.com/system/resources/previews/015/943/189/non_2x/illustration-of-beautiful-muslim-woman-wearing-hijab-free-vector.jpg'],
       category: 'inner',
       colorFamily: 'cream',
@@ -79,7 +119,19 @@ export class ProductStore {
       stylingRecommendations: [
         { type: 'hijab', productId: 3 },
         { type: 'pants', productId: 2 }
-      ]
+      ],
+      sizes: ['S', 'M', 'L', 'XL'],
+      colors: ['cream', 'beige'],
+      patternType: 'Solid',
+      material: 'Cotton',
+      occasions: ['Casual', 'Everyday', 'Work'],
+      hijabFriendly: 'yes',
+      sleeveLength: 'long',
+      necklineCoverage: 'high',
+      lengthCategory: 'midi',
+      fit: 'loose',
+      opacity: 'opaque',
+      slitCoverage: 'noSlit'
     }
   ]);
 

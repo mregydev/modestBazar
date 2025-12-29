@@ -1,38 +1,178 @@
 <div class="product-list">
-  <div class="header-section">
-    <h1>Curated Modest Pieces</h1>
-    <p class="subtitle">All items are selected for hijabi-friendly, modest cuts, opacity and length.</p>
-  </div>
+  <!-- Mobile filter toggle -->
+  @if (isMobile()) {
+    <div class="mobile-filters-toggle">
+      <button type="button" (click)="toggleFilters()" class="filters-toggle-btn">
+        {{ isFiltersOpen() ? 'Hide filters' : 'Show filters' }}
+      </button>
+    </div>
 
-  <div class="products-grid">
-    @for (product of products(); track product.id; let i = $index) {
-      <a [routerLink]="['/products', product.id]" class="product-card">
-        <div class="product-image">
-          <img 
-            [src]="product.images[0]" 
-            [alt]="product.name" 
-            [loading]="i < 4 ? 'eager' : 'lazy'"
-            [attr.fetchpriority]="i < 2 ? 'high' : 'auto'"
-          />
+    <!-- Mobile filter panel -->
+    @if (isFiltersOpen()) {
+      <div class="mobile-filters-panel">
+        <app-product-filters
+          [availableFilters]="availableFilters()"
+          [currentFilters]="currentFilters()"
+          (filtersChange)="onFiltersChange($event)"
+        ></app-product-filters>
+      </div>
+    }
+  }
+
+  <!-- Desktop layout -->
+  @if (!isMobile()) {
+    <div class="page-layout">
+      <aside class="filters-column">
+        <app-product-filters
+          [availableFilters]="availableFilters()"
+          [currentFilters]="currentFilters()"
+          (filtersChange)="onFiltersChange($event)"
+        ></app-product-filters>
+      </aside>
+
+      <section class="products-column">
+        <h1>Curated Modest Pieces</h1>
+        <p class="subtitle">All items are selected for hijabi-friendly, modest cuts, opacity and length.</p>
+
+        <div class="products-header">
+          <p class="results-count">
+            @if (products().length === 0) {
+              No products found
+            } @else {
+              {{ products().length }} {{ products().length === 1 ? 'product' : 'products' }} found
+            }
+          </p>
         </div>
-        <div class="product-info">
-          <p class="product-brand">{{ product.brand }}</p>
-          <h3 class="product-name">{{ product.name }}</h3>
-          <p class="product-price">{{ product.price }} EGP</p>
-          <div class="modesty-badges">
-            @if (product.modestyAttributes.includes('opaque')) {
-              <span class="badge">Opaque</span>
-            }
-            @if (product.modestyAttributes.includes('maxi_length')) {
-              <span class="badge">Maxi Length</span>
-            }
-            @if (product.modestyAttributes.includes('loose_fit')) {
-              <span class="badge">Loose Fit</span>
+
+        @if (products().length > 0) {
+          <div class="products-grid">
+            @for (product of products(); track product.id; let i = $index) {
+              <a [routerLink]="['/products', product.id]" class="product-card">
+                <div class="product-image">
+                  <img
+                    [src]="product.images[0]"
+                    [alt]="product.name"
+                    [loading]="i < 4 ? 'eager' : 'lazy'"
+                    [attr.fetchpriority]="i < 2 ? 'high' : 'auto'"
+                  />
+                </div>
+                <div class="product-info">
+                  @if (getStoreName(product) && getStoreSlug(product)) {
+                    <a
+                      [routerLink]="['/stores', getStoreSlug(product)]"
+                      class="store-link"
+                      (click)="$event.stopPropagation()"
+                    >
+                      @if (getStoreLogoUrl(product)) {
+                        <img
+                          class="product-store-logo"
+                          [src]="getStoreLogoUrl(product)!"
+                          [alt]="getStoreName(product) + ' logo'"
+                        />
+                      }
+                      <span class="store-name">{{ getStoreName(product) }}</span>
+                    </a>
+                  }
+                  <h3 class="product-name">{{ product.name }}</h3>
+                  <p class="product-price">{{ product.price }} EGP</p>
+                  <div class="modesty-badges">
+                    @if (product.modestyAttributes.includes('opaque')) {
+                      <span class="badge">Opaque</span>
+                    }
+                    @if (product.modestyAttributes.includes('maxi_length')) {
+                      <span class="badge">Maxi Length</span>
+                    }
+                    @if (product.modestyAttributes.includes('loose_fit')) {
+                      <span class="badge">Loose Fit</span>
+                    }
+                  </div>
+                </div>
+              </a>
             }
           </div>
+        } @else {
+          <div class="empty-state">
+            <p>No products match your filters.</p>
+            <button type="button" class="clear-filters-btn" (click)="onFiltersChange({})">
+              Clear all filters
+            </button>
+          </div>
+        }
+      </section>
+    </div>
+  }
+
+  <!-- Mobile products column -->
+  @if (isMobile()) {
+    <section class="products-column">
+      <h1>Curated Modest Pieces</h1>
+      <p class="subtitle">All items are selected for hijabi-friendly, modest cuts, opacity and length.</p>
+
+      <div class="products-header">
+        <p class="results-count">
+          @if (products().length === 0) {
+            No products found
+          } @else {
+            {{ products().length }} {{ products().length === 1 ? 'product' : 'products' }} found
+          }
+        </p>
+      </div>
+
+      @if (products().length > 0) {
+        <div class="products-grid">
+          @for (product of products(); track product.id; let i = $index) {
+            <a [routerLink]="['/products', product.id]" class="product-card">
+              <div class="product-image">
+                <img
+                  [src]="product.images[0]"
+                  [alt]="product.name"
+                  [loading]="i < 4 ? 'eager' : 'lazy'"
+                  [attr.fetchpriority]="i < 2 ? 'high' : 'auto'"
+                />
+              </div>
+              <div class="product-info">
+                @if (getStoreName(product) && getStoreSlug(product)) {
+                  <a
+                    [routerLink]="['/stores', getStoreSlug(product)]"
+                    class="store-link"
+                    (click)="$event.stopPropagation()"
+                  >
+                    @if (getStoreLogoUrl(product)) {
+                      <img
+                        class="product-store-logo"
+                        [src]="getStoreLogoUrl(product)!"
+                        [alt]="getStoreName(product) + ' logo'"
+                      />
+                    }
+                    <span class="store-name">{{ getStoreName(product) }}</span>
+                  </a>
+                }
+                <h3 class="product-name">{{ product.name }}</h3>
+                <p class="product-price">{{ product.price }} EGP</p>
+                <div class="modesty-badges">
+                  @if (product.modestyAttributes.includes('opaque')) {
+                    <span class="badge">Opaque</span>
+                  }
+                  @if (product.modestyAttributes.includes('maxi_length')) {
+                    <span class="badge">Maxi Length</span>
+                  }
+                  @if (product.modestyAttributes.includes('loose_fit')) {
+                    <span class="badge">Loose Fit</span>
+                  }
+                </div>
+              </div>
+            </a>
+          }
         </div>
-      </a>
-    }
-  </div>
+      } @else {
+        <div class="empty-state">
+          <p>No products match your filters.</p>
+          <button type="button" class="clear-filters-btn" (click)="onFiltersChange({})">
+            Clear all filters
+          </button>
+        </div>
+      }
+    </section>
+  }
 </div>
 

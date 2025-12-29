@@ -59,7 +59,21 @@
 
       <div class="product-info-section">
         <h1 class="product-name">{{ currentProduct.name }}</h1>
-        <p class="product-brand">{{ currentProduct.brand }}</p>
+        @if (getStoreName(currentProduct) && getStoreSlug(currentProduct)) {
+          <a
+            [routerLink]="['/stores', getStoreSlug(currentProduct)]"
+            class="store-link"
+          >
+            @if (getStoreLogoUrl(currentProduct)) {
+              <img
+                class="product-store-logo"
+                [src]="getStoreLogoUrl(currentProduct)!"
+                [alt]="getStoreName(currentProduct) + ' logo'"
+              />
+            }
+            <span class="store-name">{{ getStoreName(currentProduct) }}</span>
+          </a>
+        }
         <p class="product-price">{{ currentProduct.price }} EGP</p>
 
         <div class="modesty-attributes">
@@ -92,17 +106,94 @@
           </div>
         </div>
 
-        <div class="color-filter-section">
-          <h3>Filter by Color</h3>
-          <div class="color-filters">
-            @for (color of availableColors(); track color) {
-              <button
-                class="color-filter-btn"
-                [class.active]="selectedColor() === color"
-                [style.background-color]="getColorValue(color)"
-                (click)="selectedColor.set(color)"
-                [title]="color.charAt(0).toUpperCase() + color.slice(1)"
-              ></button>
+        <div class="product-attributes-section">
+          <h3>Product Details</h3>
+          <div class="attributes-grid">
+            @if (currentProduct.colors && currentProduct.colors.length > 0) {
+              <div class="attribute-item">
+                <strong>Colors:</strong>
+                <div class="color-display">
+                  @for (color of currentProduct.colors; track color) {
+                    <span
+                      class="color-badge"
+                      [style.background-color]="getColorValue(color)"
+                      [title]="color.charAt(0).toUpperCase() + color.slice(1)"
+                    ></span>
+                  }
+                </div>
+              </div>
+            }
+            @if (currentProduct.sizes && currentProduct.sizes.length > 0) {
+              <div class="attribute-item">
+                <strong>Available Sizes:</strong>
+                <span>{{ currentProduct.sizes.join(', ') }}</span>
+              </div>
+            }
+            @if (currentProduct.patternType) {
+              <div class="attribute-item">
+                <strong>Pattern:</strong>
+                <span>{{ currentProduct.patternType }}</span>
+              </div>
+            }
+            @if (currentProduct.material) {
+              <div class="attribute-item">
+                <strong>Material:</strong>
+                <span>{{ currentProduct.material }}</span>
+              </div>
+            }
+            @if (currentProduct.occasions && currentProduct.occasions.length > 0) {
+              <div class="attribute-item">
+                <strong>Occasions:</strong>
+                <span>{{ currentProduct.occasions.join(', ') }}</span>
+              </div>
+            }
+          </div>
+        </div>
+
+        <div class="extended-modesty-section">
+          <h3>Modesty Details</h3>
+          <div class="modesty-details-grid">
+            @if (currentProduct.hijabFriendly) {
+              <div class="modesty-detail-item">
+                <strong>Hijab Friendly:</strong>
+                <span>{{ currentProduct.hijabFriendly === 'yes' ? 'Yes' : currentProduct.hijabFriendly === 'maybe' ? 'Maybe' : 'No' }}</span>
+              </div>
+            }
+            @if (currentProduct.sleeveLength) {
+              <div class="modesty-detail-item">
+                <strong>Sleeve Length:</strong>
+                <span>{{ currentProduct.sleeveLength === 'threeQuarter' ? '3/4' : currentProduct.sleeveLength.charAt(0).toUpperCase() + currentProduct.sleeveLength.slice(1) }}</span>
+              </div>
+            }
+            @if (currentProduct.necklineCoverage) {
+              <div class="modesty-detail-item">
+                <strong>Neckline Coverage:</strong>
+                <span>{{ currentProduct.necklineCoverage.charAt(0).toUpperCase() + currentProduct.necklineCoverage.slice(1) }}</span>
+              </div>
+            }
+            @if (currentProduct.lengthCategory) {
+              <div class="modesty-detail-item">
+                <strong>Length:</strong>
+                <span>{{ currentProduct.lengthCategory.charAt(0).toUpperCase() + currentProduct.lengthCategory.slice(1) }}</span>
+              </div>
+            }
+            @if (currentProduct.fit) {
+              <div class="modesty-detail-item">
+                <strong>Fit:</strong>
+                <span>{{ currentProduct.fit.charAt(0).toUpperCase() + currentProduct.fit.slice(1) }}</span>
+              </div>
+            }
+            @if (currentProduct.opacity) {
+              <div class="modesty-detail-item">
+                <strong>Opacity:</strong>
+                <span>{{ currentProduct.opacity === 'opaque' ? 'Opaque' : 'Semi-sheer' }}</span>
+              </div>
+            }
+            @if (currentProduct.slitCoverage) {
+              <div class="modesty-detail-item">
+                <strong>Slit Coverage:</strong>
+                <span>{{ currentProduct.slitCoverage === 'noSlit' ? 'No slit' : currentProduct.slitCoverage === 'smallSideSlit' ? 'Small side slit' : 'High slit' }}</span>
+              </div>
             }
           </div>
         </div>

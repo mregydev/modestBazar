@@ -1,0 +1,56 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Store Owner Login</h1>
+    <p class="subtitle">Sign in to manage your store</p>
+
+    @if (error()) {
+      <div class="error-message">
+        {{ error() }}
+      </div>
+    }
+
+    <form (ngSubmit)="onLogin()" class="login-form">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+          placeholder="owner@modestbazar.com"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          [(ngModel)]="password"
+          name="password"
+          required
+          placeholder="Enter your password"
+        />
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="isSubmitting()">
+        {{ isSubmitting() ? 'Logging in...' : 'Login' }}
+      </button>
+    </form>
+
+    <div class="demo-info">
+      <p><strong>Demo Credentials:</strong></p>
+      <ul>
+        <li>owner1&#64;modestbazar.com / password1</li>
+        <li>owner2&#64;modestbazar.com / password2</li>
+        <li>owner3&#64;modestbazar.com / password3</li>
+      </ul>
+    </div>
+
+    <div class="back-link">
+      <a routerLink="/">← Back to shopping</a>
+    </div>
+  </div>
+</div>
+

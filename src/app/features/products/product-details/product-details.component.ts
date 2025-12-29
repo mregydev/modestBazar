@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductStore } from '../../../core/state/product-store.service';
+import { StoreStore } from '../../../core/state/store-store.service';
 import { Product } from '../../../core/models/product.model';
 
 @Component({
@@ -14,21 +15,14 @@ import { Product } from '../../../core/models/product.model';
 })
 export class ProductDetailsComponent implements OnInit {
   private productStore = inject(ProductStore);
+  private storeStore = inject(StoreStore);
   private route = inject(ActivatedRoute);
 
   product = this.productStore.selectedProduct;
   recommendations = signal<Product[]>([]);
   selectedSize = signal<string>('M');
   selectedExtras = this.productStore.selectedExtras;
-  selectedColor = signal<string>('');
   currentImageIndex = signal(0);
-
-  // Get available colors from all products
-  availableColors = computed(() => {
-    const products = this.productStore.products();
-    const colors = new Set(products.map(p => p.colorFamily));
-    return Array.from(colors).sort();
-  });
 
   // Image magnifier signals
   showZoomLens = signal(false);
@@ -190,12 +184,6 @@ export class ProductDetailsComponent implements OnInit {
     });
   }
 
-  onColorFilterChange(color: string): void {
-    this.selectedColor.set(color);
-    // Filter products by color - this would filter the product list
-    // For now, we'll just store the selection
-  }
-
   // Map color names to actual CSS colors
   getColorValue(colorName: string): string {
     const colorMap: { [key: string]: string } = {
@@ -219,6 +207,31 @@ export class ProductDetailsComponent implements OnInit {
       'khaki': '#C3B091'
     };
     return colorMap[colorName.toLowerCase()] || '#CCCCCC';
+  }
+
+  /**
+   * Get store logo URL for a product (by brand name)
+   */
+  getStoreLogoUrl(product: Product): string | null {
+    if (!product.brand) return null;
+    const store = this.storeStore.getStoreByName(product.brand);
+    return store?.logoImageUrl || null;
+  }
+
+  /**
+   * Get store name for a product (brand is the store name)
+   */
+  getStoreName(product: Product): string | null {
+    return product.brand || null;
+  }
+
+  /**
+   * Get store slug for a product (for routing, by brand name)
+   */
+  getStoreSlug(product: Product): string | null {
+    if (!product.brand) return null;
+    const store = this.storeStore.getStoreByName(product.brand);
+    return store?.slug || null;
   }
 }
 

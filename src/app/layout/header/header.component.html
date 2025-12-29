@@ -28,7 +28,7 @@
       @if (authStore.isLoggedIn()) {
         <a routerLink="/checkout" routerLinkActive="active">Checkout</a>
       }
-      @if (!authStore.isLoggedIn()) {
+      @if (!authStore.isLoggedIn() && !storeOwnerAuth.isLoggedIn()) {
         <div class="header-actions">
           <a routerLink="/login" class="auth-link">Login</a>
           <div class="language-selector">
@@ -51,6 +51,33 @@
               </div>
             }
           </div>
+        </div>
+      }
+      <!-- Store Owner Links -->
+      @if (storeOwnerAuth.isLoggedIn()) {
+        @if (getMyStoreSlug()) {
+          <a [routerLink]="['/stores', getMyStoreSlug()]" class="store-link">My Store</a>
+        }
+        <button class="btn-logout" (click)="onStoreOwnerLogout()">Logout</button>
+        <div class="language-selector">
+          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+            <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
+          </button>
+          @if (showLanguageDropdown()) {
+            <div class="language-dropdown">
+              @for (lang of languages; track lang.code) {
+                <button
+                  class="language-option"
+                  [class.active]="currentLanguage() === lang.code"
+                  (click)="selectLanguage(lang.code)"
+                  type="button"
+                >
+                  <span class="flag-icon" [ngClass]="lang.flagClass"></span>
+                  <span class="language-name">{{ lang.name }}</span>
+                </button>
+              }
+            </div>
+          }
         </div>
       }
     </nav>
@@ -83,4 +110,3 @@
     }
   </div>
 </header>
-
