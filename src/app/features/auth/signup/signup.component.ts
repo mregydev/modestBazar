@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '../../../core/state/auth-store.service';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-signup',
@@ -18,10 +19,9 @@ export class SignupComponent {
   error = signal('');
   isSubmitting = signal(false);
 
-  constructor(
-    private authStore: AuthStore,
-    private router: Router
-  ) {}
+  private authStore = inject(AuthStore);
+  private router = inject(Router);
+  public translationService = inject(TranslationService);
 
   onSubmit(): void {
     const nameValue = this.name();
@@ -36,6 +36,7 @@ export class SignupComponent {
     this.error.set('');
     this.isSubmitting.set(true);
 
+    // Simulate delay
     setTimeout(() => {
       this.authStore.signup(nameValue, emailValue, passwordValue);
       this.isSubmitting.set(false);
@@ -44,12 +45,21 @@ export class SignupComponent {
   }
 
   signupWithGoogle(): void {
+    // TODO: Implement Google OAuth integration
+    // For now, simulate signup
     this.authStore.signup('Google User', 'google.user@example.com', 'google');
     this.router.navigate(['/']);
   }
 
   signupWithFacebook(): void {
+    // TODO: Implement Facebook OAuth integration
+    // For now, simulate signup
     this.authStore.signup('Facebook User', 'facebook.user@example.com', 'facebook');
     this.router.navigate(['/']);
   }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
+  }
 }
+

@@ -57,6 +57,10 @@ export interface Product {
   fit?: 'slim' | 'regular' | 'loose';
   opacity?: 'opaque' | 'semiSheer';
   slitCoverage?: 'noSlit' | 'smallSideSlit' | 'highSlit';
+
+  // Rating
+  rating?: number;        // Average rating (0-5)
+  reviewCount?: number;   // Number of reviews
 }
 
 /**

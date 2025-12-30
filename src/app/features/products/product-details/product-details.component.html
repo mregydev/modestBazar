@@ -1,9 +1,10 @@
 @if (product(); as currentProduct) {
   <div class="product-details">
-    <a routerLink="/" class="back-link">← Back to products</a>
+    <a routerLink="/" class="back-link">{{ translate('productDetails.back') }}</a>
 
-    <div class="product-layout">
-      <div class="product-image-section">
+    <div class="product-layouts">
+      <div class="product-main-content">
+        <div class="product-image-section">
         <div class="image-carousel">
           <div class="image-zoom-container" (mouseenter)="onImageMouseEnter()" (mousemove)="onImageMouseMove($event)" (mouseleave)="onImageMouseLeave()">
             <img
@@ -74,10 +75,23 @@
             <span class="store-name">{{ getStoreName(currentProduct) }}</span>
           </a>
         }
-        <p class="product-price">{{ currentProduct.price }} EGP</p>
+        @if (currentProduct.rating) {
+          <app-star-rating
+            [rating]="currentProduct.rating"
+            [reviewCount]="currentProduct.reviewCount || 0"
+            [showReviewCount]="true"
+            size="medium"
+          ></app-star-rating>
+        }
+        <p class="product-price">{{ currentProduct.price }} {{ translate('common.egp') }}</p>
+
+        <div class="description-section">
+          <h3>{{ translate('productDetails.description') }}</h3>
+          <p>{{ currentProduct.description }}</p>
+        </div>
 
         <div class="modesty-attributes">
-          <h3>Modesty Attributes</h3>
+          <h3>{{ translate('productDetails.modestyAttributes') }}</h3>
           <div class="modesty-badges">
             @for (attr of currentProduct.modestyAttributes; track attr) {
               <span class="modesty-badge">{{ attr.replace('_', ' ') }}</span>
@@ -86,7 +100,7 @@
         </div>
 
         <div class="size-section">
-          <h3>Size & Length</h3>
+          <h3>{{ translate('productDetails.sizeLength') }}</h3>
           <div class="size-guide-formatted">
             @for (sizeItem of getFormattedSizeGuide(currentProduct.sizeGuide); track sizeItem.size) {
               <div class="size-item">
@@ -96,7 +110,7 @@
             }
           </div>
           <div class="size-selector">
-            <label for="size">Select Size:</label>
+            <label for="size">{{ translate('productDetails.selectSize') }}</label>
             <select id="size" [(ngModel)]="selectedSize" (ngModelChange)="selectedSize.set($event)">
               <option value="S">S</option>
               <option value="M">M</option>
@@ -198,49 +212,73 @@
           </div>
         </div>
 
-        <div class="description-section">
-          <h3>Description</h3>
-          <p>{{ currentProduct.description }}</p>
+        <a routerLink="/checkout" class="checkout-button">{{ translate('productDetails.checkout') }}</a>
         </div>
-
-        <div class="styling-section">
-          <h3>Complete the modest look</h3>
-          @if (recommendations().length > 0) {
-            <div class="recommendations-grid">
-              @for (rec of recommendations(); track rec.id) {
-                <div class="recommendation-card">
-                  <a [routerLink]="['/products', rec.id]" class="rec-link" (click)="scrollToTop()">
-                    <img [src]="rec.images[0]" [alt]="rec.name" loading="lazy" />
-                    <div class="rec-info">
-                      <p class="rec-name">{{ rec.name }}</p>
-                      <p class="rec-price">{{ rec.price }} EGP</p>
-                    </div>
-                  </a>
-                  <label class="checkbox-label" (click)="$event.stopPropagation()">
-                    <input
-                      type="checkbox"
-                      [checked]="isExtraSelected(rec.id)"
-                      (change)="toggleExtra(rec.id); $event.stopPropagation()"
-                      (click)="$event.stopPropagation()"
-                    />
-                    Add to my order
-                  </label>
-                </div>
-              }
-            </div>
-          } @else {
-            <p class="no-recommendations">No styling recommendations available for this product.</p>
-          }
-        </div>
-
-        <a routerLink="/checkout" class="checkout-button">Continue to WhatsApp checkout</a>
       </div>
+
+      <!-- Matching Items -->
+      @if (recommendations().length > 0) {
+        <div class="carousel-section matching-items">
+          <h3 class="carousel-title">{{ translate('productDetails.completeLook') }}</h3>
+          <div class="recommendations-flex-container">
+            @for (rec of recommendations(); track rec.id) {
+              <div class="recommendation-card">
+                <a [routerLink]="['/products', rec.id]" class="rec-link" (click)="scrollToTop()">
+                  <img [src]="rec.images[0]" [alt]="rec.name" loading="lazy" />
+                  <div class="rec-info">
+                    <p class="rec-name">{{ rec.name }}</p>
+                    <p class="rec-price">{{ rec.price }} {{ translate('common.egp') }}</p>
+                  </div>
+                </a>
+                <label class="checkbox-label" (click)="$event.stopPropagation()">
+                  <input
+                    type="checkbox"
+                    [checked]="isExtraSelected(rec.id)"
+                    (change)="toggleExtra(rec.id); $event.stopPropagation()"
+                    (click)="$event.stopPropagation()"
+                  />
+                  {{ translate('productDetails.addToOrder') }}
+                </label>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (similarProducts().length > 0) {
+        <div class="carousel-section matching-items">
+          <h3 class="carousel-title">{{ translate('productDetails.similarProducts') }}</h3>
+          <div class="recommendations-flex-container">
+            @for (rec of similarProducts(); track rec.id) {
+              <div class="recommendation-card">
+                <a [routerLink]="['/products', rec.id]" class="rec-link" (click)="scrollToTop()">
+                  <img [src]="rec.images[0]" [alt]="rec.name" loading="lazy" />
+                  <div class="rec-info">
+                    <p class="rec-name">{{ rec.name }}</p>
+                    <p class="rec-price">{{ rec.price }} {{ translate('common.egp') }}</p>
+                  </div>
+                </a>
+                <label class="checkbox-label" (click)="$event.stopPropagation()">
+                  <input
+                    type="checkbox"
+                    [checked]="isExtraSelected(rec.id)"
+                    (change)="toggleExtra(rec.id); $event.stopPropagation()"
+                    (click)="$event.stopPropagation()"
+                  />
+                  {{ translate('productDetails.addToOrder') }}
+                </label>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
     </div>
   </div>
 } @else {
   <div class="no-product">
-    <p>Product not found</p>
-    <a routerLink="/">Back to products</a>
+    <p>{{ translate('productDetails.notFound') }}</p>
+    <a routerLink="/">{{ translate('productDetails.back') }}</a>
   </div>
 }
 

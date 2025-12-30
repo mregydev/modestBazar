@@ -3,7 +3,7 @@
   @if (isMobile()) {
     <div class="mobile-filters-toggle">
       <button type="button" (click)="toggleFilters()" class="filters-toggle-btn">
-        {{ isFiltersOpen() ? 'Hide filters' : 'Show filters' }}
+        {{ isFiltersOpen() ? translate('productList.filters.hide') : translate('productList.filters.show') }}
       </button>
     </div>
 
@@ -31,15 +31,15 @@
       </aside>
 
       <section class="products-column">
-        <h1>Curated Modest Pieces</h1>
-        <p class="subtitle">All items are selected for hijabi-friendly, modest cuts, opacity and length.</p>
+        <h1>{{ translate('productList.title') }}</h1>
+        <p class="subtitle">{{ translate('productList.subtitle') }}</p>
 
         <div class="products-header">
           <p class="results-count">
             @if (products().length === 0) {
-              No products found
+              {{ translate('productList.results.none') }}
             } @else {
-              {{ products().length }} {{ products().length === 1 ? 'product' : 'products' }} found
+              {{ translate('productList.results.found', {count: products().length}) }}
             }
           </p>
         </div>
@@ -74,7 +74,15 @@
                     </a>
                   }
                   <h3 class="product-name">{{ product.name }}</h3>
-                  <p class="product-price">{{ product.price }} EGP</p>
+                  @if (product.rating) {
+                    <app-star-rating
+                      [rating]="product.rating"
+                      [reviewCount]="product.reviewCount || 0"
+                      [showReviewCount]="true"
+                      size="small"
+                    ></app-star-rating>
+                  }
+                  <p class="product-price">{{ product.price }} {{ translate('common.egp') }}</p>
                   <div class="modesty-badges">
                     @if (product.modestyAttributes.includes('opaque')) {
                       <span class="badge">Opaque</span>
@@ -166,9 +174,9 @@
         </div>
       } @else {
         <div class="empty-state">
-          <p>No products match your filters.</p>
+          <p>{{ translate('productList.results.none') }}</p>
           <button type="button" class="clear-filters-btn" (click)="onFiltersChange({})">
-            Clear all filters
+            {{ translate('common.clear') }}
           </button>
         </div>
       }

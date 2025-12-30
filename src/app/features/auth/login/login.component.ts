@@ -1,8 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthStore } from '../../../core/state/auth-store.service';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-login',
@@ -17,10 +18,9 @@ export class LoginComponent {
   error = signal('');
   isSubmitting = signal(false);
 
-  constructor(
-    private authStore: AuthStore,
-    private router: Router
-  ) {}
+  private authStore = inject(AuthStore);
+  private router = inject(Router);
+  public translationService = inject(TranslationService);
 
   onSubmit(): void {
     const emailValue = this.email();
@@ -34,6 +34,7 @@ export class LoginComponent {
     this.error.set('');
     this.isSubmitting.set(true);
 
+    // Simulate delay
     setTimeout(() => {
       this.authStore.login(emailValue, passwordValue);
       this.isSubmitting.set(false);
@@ -42,12 +43,21 @@ export class LoginComponent {
   }
 
   loginWithGoogle(): void {
+    // TODO: Implement Google OAuth integration
+    // For now, simulate login
     this.authStore.login('google.user@example.com', 'google');
     this.router.navigate(['/']);
   }
 
   loginWithFacebook(): void {
+    // TODO: Implement Facebook OAuth integration
+    // For now, simulate login
     this.authStore.login('facebook.user@example.com', 'facebook');
     this.router.navigate(['/']);
   }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
+  }
 }
+

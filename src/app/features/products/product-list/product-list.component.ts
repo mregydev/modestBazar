@@ -5,6 +5,8 @@ import { ProductStore } from '../../../core/state/product-store.service';
 import { StoreStore } from '../../../core/state/store-store.service';
 import { Product, ProductFilters } from '../../../core/models/product.model';
 import { ProductFiltersComponent, AvailableFilters } from './product-filters/product-filters.component';
+import { TranslationService } from '../../../core/services/translation.service';
+import { StarRatingComponent } from '../../../shared/components/star-rating/star-rating.component';
 import { Subject, fromEvent } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 
@@ -22,7 +24,7 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [CommonModule, RouterLink, ProductFiltersComponent],
+  imports: [CommonModule, RouterLink, ProductFiltersComponent, StarRatingComponent],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
@@ -31,6 +33,7 @@ export class ProductListComponent implements OnInit, OnDestroy {
   private storeStore = inject(StoreStore);
   private platformId = inject(PLATFORM_ID);
   private destroy$ = new Subject<void>();
+  public translationService = inject(TranslationService);
 
   // All products from store
   allProducts = this.productStore.products;
@@ -309,6 +312,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
    */
   onFiltersChange(filters: ProductFilters): void {
     this.currentFilters.set(filters);
+  }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
   }
 }
 

@@ -9,7 +9,7 @@
       <div class="search-bar">
         <input
           type="text"
-          placeholder="Search products..."
+          [placeholder]="translate('header.search.placeholder')"
           [value]="searchQuery()"
           (input)="searchQuery.set($any($event.target).value)"
           (keyup.enter)="onSearch()"
@@ -24,15 +24,15 @@
     }
 
     <nav class="nav">
-      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Products</a>
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">{{ translate('header.products') }}</a>
       @if (authStore.isLoggedIn()) {
-        <a routerLink="/checkout" routerLinkActive="active">Checkout</a>
+        <a routerLink="/checkout" routerLinkActive="active">{{ translate('checkout.title') }}</a>
       }
       @if (!authStore.isLoggedIn() && !storeOwnerAuth.isLoggedIn()) {
         <div class="header-actions">
-          <a routerLink="/login" class="auth-link">Login</a>
+          <a routerLink="/login" class="auth-link">{{ translate('header.login') }}</a>
           <div class="language-selector">
-            <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+            <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="translate('header.language.select')">
               <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
             </button>
             @if (showLanguageDropdown()) {
@@ -56,11 +56,11 @@
       <!-- Store Owner Links -->
       @if (storeOwnerAuth.isLoggedIn()) {
         @if (getMyStoreSlug()) {
-          <a [routerLink]="['/stores', getMyStoreSlug()]" class="store-link">My Store</a>
+          <a [routerLink]="['/stores', getMyStoreSlug()]" class="store-link">{{ translate('header.store.my') }}</a>
         }
-        <button class="btn-logout" (click)="onStoreOwnerLogout()">Logout</button>
+        <button class="btn-logout" (click)="onStoreOwnerLogout()">{{ translate('header.logout') }}</button>
         <div class="language-selector">
-          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="translate('header.language.select')">
             <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
           </button>
           @if (showLanguageDropdown()) {
@@ -84,10 +84,10 @@
 
     @if (authStore.isLoggedIn()) {
       <div class="auth-section">
-        <span class="user-greeting">Hi, {{ authStore.user()?.name }}</span>
-        <button class="btn-logout" (click)="authStore.logout()">Logout</button>
+        <span class="user-greeting">{{ translate('header.greeting', {name: authStore.user()?.name || ''}) }}</span>
+        <button class="btn-logout" (click)="authStore.logout()">{{ translate('header.logout') }}</button>
         <div class="language-selector">
-          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="'Select language'">
+          <button class="language-button" type="button" (click)="toggleLanguageDropdown()" [attr.aria-label]="translate('header.language.select')">
             <span class="flag-icon" [ngClass]="getCurrentLanguageFlagClass()"></span>
           </button>
           @if (showLanguageDropdown()) {

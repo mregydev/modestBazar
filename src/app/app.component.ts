@@ -66,12 +66,17 @@ import { HeaderComponent } from './layout/header/header.component';
       }
     }
 
-    /* Prevent outer scroll on product details page only (desktop) */
+    /* Product details page - allow scrolling to show carousels */
     .app-main:has(.product-details) {
-      overflow: hidden;
-      padding: 0 1rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: 0;
       height: calc(100vh - 80px);
       margin-top: 80px;
+      max-width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
 
     /* Allow scrolling on mobile */
@@ -81,6 +86,7 @@ import { HeaderComponent } from './layout/header/header.component';
         height: auto;
         min-height: calc(100vh - 80px);
         padding: 1.5rem 1rem 3rem;
+        margin-top: 0;
       }
     }
   `]

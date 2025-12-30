@@ -4,12 +4,14 @@ import { RouterLink, ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductStore } from '../../../core/state/product-store.service';
 import { StoreStore } from '../../../core/state/store-store.service';
+import { TranslationService } from '../../../core/services/translation.service';
+import { StarRatingComponent } from '../../../shared/components/star-rating/star-rating.component';
 import { Product } from '../../../core/models/product.model';
 
 @Component({
   selector: 'app-product-details',
   standalone: true,
-  imports: [CommonModule, RouterLink, FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule, StarRatingComponent],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
@@ -17,12 +19,33 @@ export class ProductDetailsComponent implements OnInit {
   private productStore = inject(ProductStore);
   private storeStore = inject(StoreStore);
   private route = inject(ActivatedRoute);
+  public translationService = inject(TranslationService);
 
   product = this.productStore.selectedProduct;
   recommendations = signal<Product[]>([]);
+  similarProducts = signal<Product[]>([]);
   selectedSize = signal<string>('M');
   selectedExtras = this.productStore.selectedExtras;
   currentImageIndex = signal(0);
+
+  // PrimeNG Carousel responsive options
+  responsiveOptions = [
+    {
+      breakpoint: '1400px',
+      numVisible: 5,
+      numScroll: 1
+    },
+    {
+      breakpoint: '992px',
+      numVisible: 3,
+      numScroll: 1
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 2,
+      numScroll: 1
+    }
+  ];
 
   // Image magnifier signals
   showZoomLens = signal(false);
@@ -31,16 +54,21 @@ export class ProductDetailsComponent implements OnInit {
   zoomBackgroundPosition = signal('0% 0%');
 
   constructor() {
-    // Effect to update recommendations when product changes
+    // Effect to update recommendations and similar products when product changes
     effect(() => {
       const currentProduct = this.product();
       if (currentProduct) {
         const recs = this.productStore.getStylingRecommendationsFor(currentProduct);
         this.recommendations.set(recs);
+
+        // Get similar products using the store method
+        const similar = this.productStore.getSimilarProducts(currentProduct, 10);
+        this.similarProducts.set(similar);
       } else {
         this.recommendations.set([]);
+        this.similarProducts.set([]);
       }
-    });
+    }, { allowSignalWrites: true });
   }
 
   ngOnInit(): void {
@@ -59,10 +87,13 @@ export class ProductDetailsComponent implements OnInit {
           this.recommendations.set(recs);
           // Preload all product images
           this.preloadImages(selectedProduct.images);
+          // Prefetch all product images for faster loading
+          this.prefetchImages(selectedProduct.images);
           // Preload recommendation images
           recs.forEach(rec => {
             if (rec.images && rec.images.length > 0) {
               this.preloadImages(rec.images);
+              this.prefetchImages(rec.images);
             }
           });
         }
@@ -80,6 +111,22 @@ export class ProductDetailsComponent implements OnInit {
       img.onerror = () => {
         console.warn(`Failed to preload image: ${url}`);
       };
+    });
+  }
+
+  private prefetchImages(imageUrls: string[]): void {
+    if (typeof document === 'undefined') return;
+
+    imageUrls.forEach(url => {
+      // Check if link already exists
+      const existingLink = document.querySelector(`link[rel="prefetch"][href="${url}"]`);
+      if (!existingLink) {
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.as = 'image';
+        link.href = url;
+        document.head.appendChild(link);
+      }
     });
   }
 
@@ -185,6 +232,10 @@ export class ProductDetailsComponent implements OnInit {
   }
 
   // Map color names to actual CSS colors
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
+  }
+
   getColorValue(colorName: string): string {
     const colorMap: { [key: string]: string } = {
       'olive': '#808000',

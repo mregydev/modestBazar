@@ -2,6 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductStore } from '../../../core/state/product-store.service';
+import { TranslationService } from '../../../core/services/translation.service';
 
 @Component({
   selector: 'app-checkout',
@@ -12,6 +13,7 @@ import { ProductStore } from '../../../core/state/product-store.service';
 })
 export class CheckoutComponent {
   private productStore = inject(ProductStore);
+  public translationService = inject(TranslationService);
 
   product = this.productStore.selectedProduct;
   extras = this.productStore.selectedExtrasProducts;
@@ -52,4 +54,9 @@ export class CheckoutComponent {
     // Placeholder - replace with actual page ID or username
     return 'https://m.me/ModestBazar';
   }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
+  }
 }
+

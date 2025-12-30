@@ -1,6 +1,20 @@
 /* Global styles for ModestBazar */
+@import "primeicons/primeicons.css";
+
 * {
   box-sizing: border-box;
+}
+
+html {
+  direction: ltr; /* Default to LTR, will be overridden by TranslationService */
+}
+
+html[dir="rtl"] {
+  direction: rtl;
+}
+
+html[dir="ltr"] {
+  direction: ltr;
 }
 
 body {
@@ -11,6 +25,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #333;
+}
+
+/* RTL-specific styles */
+html[dir="rtl"] body {
+  text-align: right;
+}
+
+html[dir="ltr"] body {
+  text-align: left;
 }
 
 /* Prevent body scroll only when product details is active (desktop) */
@@ -25,6 +48,31 @@ body:has(.product-details) {
     overflow: auto;
     height: auto;
     min-height: 100vh;
+  }
+}
+
+/* Mobile header heights for different pages */
+@media (max-width: 768px) {
+  /* Header height 250px for home (product-list) and brand (store-page) pages */
+  body:has(.product-list) .header,
+  body:has(.store-page) .header {
+    height: 250px;
+  }
+
+  body:has(.product-list) .header-content,
+  body:has(.store-page) .header-content {
+    height: 250px;
+    min-height: 250px;
+  }
+
+  /* Header height 200px for details page */
+  body:has(.product-details) .header {
+    height: 200px;
+  }
+
+  body:has(.product-details) .header-content {
+    height: 200px;
+    min-height: 200px;
   }
 }
 

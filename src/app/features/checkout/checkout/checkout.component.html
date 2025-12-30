@@ -1,31 +1,31 @@
 @if (product(); as currentProduct) {
   <div class="checkout">
-    <h1>Checkout</h1>
+    <h1>{{ translate('checkout.title') }}</h1>
 
     <div class="checkout-content">
       <div class="order-summary">
         <div class="main-product-card">
-          <h2>Main Product</h2>
+          <h2>{{ translate('checkout.mainProduct') }}</h2>
           <div class="product-summary">
             <img [src]="currentProduct.images[0]" [alt]="currentProduct.name" />
             <div class="summary-info">
               <h3>{{ currentProduct.name }}</h3>
               <p class="brand">{{ currentProduct.brand }}</p>
-              <p class="price">{{ currentProduct.price }} EGP</p>
+              <p class="price">{{ currentProduct.price }} {{ translate('common.egp') }}</p>
             </div>
           </div>
         </div>
 
         @if (extras().length > 0) {
           <div class="extras-section">
-            <h2>Styling Items</h2>
+            <h2>{{ translate('checkout.stylingItems') }}</h2>
             <div class="extras-list">
               @for (extra of extras(); track extra.id) {
                 <div class="extra-item">
                   <img [src]="extra.images[0]" [alt]="extra.name" />
                   <div class="extra-info">
                     <p class="extra-name">{{ extra.name }}</p>
-                    <p class="extra-price">{{ extra.price }} EGP</p>
+                    <p class="extra-price">{{ extra.price }} {{ translate('common.egp') }}</p>
                   </div>
                 </div>
               }
@@ -36,7 +36,7 @@
         <div class="total-section">
           <p class="total-label">Total:</p>
           <p class="total-amount">
-            {{ total() }} EGP
+            {{ total() }} {{ translate('common.egp') }}
           </p>
         </div>
       </div>
@@ -46,10 +46,10 @@
         <p class="contact-description">Choose your preferred way to complete your order:</p>
         <div class="contact-buttons">
           <a [href]="buildWhatsAppUrl()" target="_blank" class="contact-button whatsapp">
-            Contact via WhatsApp
+            {{ translate('checkout.whatsapp') }}
           </a>
           <a [href]="buildMessengerUrl()" target="_blank" class="contact-button messenger">
-            Contact via Messenger
+            {{ translate('checkout.messenger') }}
           </a>
         </div>
       </div>
@@ -57,7 +57,7 @@
   </div>
 } @else {
   <div class="no-product">
-    <p>No product selected yet.</p>
-    <a routerLink="/">Back to products</a>
+    <p>{{ translate('checkout.noProduct') }}</p>
+    <a routerLink="/">{{ translate('checkout.backToProducts') }}</a>
   </div>
 }

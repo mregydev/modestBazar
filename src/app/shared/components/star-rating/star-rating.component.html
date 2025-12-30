@@ -1,0 +1,29 @@
+<div class="star-rating" [class.size-small]="size === 'small'" [class.size-medium]="size === 'medium'" [class.size-large]="size === 'large'">
+  <div class="stars">
+    @for (star of stars; track star) {
+      @if (getStarClass($index) === 'partial') {
+        <span class="star partial" [style.--fill-percent]="partialStarFill + '%'">
+          <svg class="star-full" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ffc107">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+          <svg class="star-empty" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#ddd">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </span>
+      } @else {
+        <span class="star" [class]="getStarClass($index)">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+          </svg>
+        </span>
+      }
+    }
+  </div>
+  @if (rating > 0) {
+    <span class="rating-value">{{ rating.toFixed(1) }}</span>
+  }
+  @if (showReviewCount && reviewCount > 0) {
+    <span class="review-count">({{ reviewCount }})</span>
+  }
+</div>
+

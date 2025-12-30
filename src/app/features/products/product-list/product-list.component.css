@@ -202,6 +202,11 @@
   font-size: 0.85rem;
 }
 
+app-star-rating {
+  margin: 0.5rem 0;
+  display: block;
+}
+
 .product-name {
   font-size: 1.2rem;
   color: #333;

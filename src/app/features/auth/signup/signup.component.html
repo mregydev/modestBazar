@@ -16,7 +16,7 @@
       </div>
 
       <div class="form-group">
-        <label for="email">Email</label>
+        <label for="email">{{ translate('auth.signup.email') }}</label>
         <input
           type="email"
           id="email"
@@ -27,7 +27,7 @@
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <label for="password">{{ translate('auth.signup.password') }}</label>
         <input
           type="password"
           id="password"
@@ -45,7 +45,7 @@
         @if (isSubmitting()) {
           Creating account...
         } @else {
-          Sign Up
+          {{ translate('auth.signup.submit') }}
         }
       </button>
     </form>

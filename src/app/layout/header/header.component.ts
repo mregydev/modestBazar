@@ -6,8 +6,7 @@ import { filter } from 'rxjs/operators';
 import { AuthStore } from '../../core/state/auth-store.service';
 import { StoreOwnerAuthService } from '../../core/state/store-owner-auth.service';
 import { StoreStore } from '../../core/state/store-store.service';
-
-export type Language = 'ar' | 'en';
+import { TranslationService, Language } from '../../core/services/translation.service';
 
 @Component({
   selector: 'app-header',
@@ -18,30 +17,15 @@ export type Language = 'ar' | 'en';
 })
 export class HeaderComponent {
   searchQuery = signal('');
-  currentLanguage = signal<Language>('en');
   showLanguageDropdown = signal(false);
   currentUrl = signal('');
-
-  languages = [
-    { code: 'ar' as Language, name: 'العربية', flag: '🇪🇬', flagClass: 'flag-egypt' },
-    { code: 'en' as Language, name: 'English', flag: '🇬🇧', flagClass: 'flag-uk' }
-  ];
-
-  isProductDetailsPage = computed(() => {
-    const url = this.currentUrl();
-    return url.startsWith('/products/') && url.split('/').length > 2;
-  });
-
-  shouldHideSearchBar = computed(() => {
-    const url = this.currentUrl();
-    return this.isProductDetailsPage() || url === '/login' || url === '/signup';
-  });
 
   constructor(
     public authStore: AuthStore,
     public storeOwnerAuth: StoreOwnerAuthService,
     private storeStore: StoreStore,
-    private router: Router
+    private router: Router,
+    public translationService: TranslationService
   ) {
     // Update current URL on navigation
     this.router.events
@@ -54,6 +38,32 @@ export class HeaderComponent {
     this.currentUrl.set(this.router.url);
   }
 
+  get currentLanguage() {
+    return this.translationService.currentLanguage;
+  }
+
+  get languages() {
+    return [
+      { code: 'ar' as Language, name: 'العربية', flag: '🇪🇬', flagClass: 'flag-egypt' },
+      { code: 'en' as Language, name: 'English', flag: '🇬🇧', flagClass: 'flag-uk' }
+    ];
+  }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
+  }
+
+  isProductDetailsPage = computed(() => {
+    const url = this.currentUrl();
+    return url.startsWith('/products/') && url.split('/').length > 2;
+  });
+
+  shouldHideSearchBar = computed(() => {
+    const url = this.currentUrl();
+    return this.isProductDetailsPage() || url === '/login' || url === '/signup';
+  });
+
+
   onSearch(): void {
     const query = this.searchQuery().trim();
     if (query) {
@@ -64,9 +74,8 @@ export class HeaderComponent {
   }
 
   selectLanguage(language: Language): void {
-    this.currentLanguage.set(language);
+    this.translationService.setLanguage(language);
     this.showLanguageDropdown.set(false);
-    // TODO: Implement language change logic (i18n)
   }
 
   getCurrentLanguageFlagClass(): string {

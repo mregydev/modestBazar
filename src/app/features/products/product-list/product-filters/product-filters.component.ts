@@ -1,8 +1,9 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, debounceTime, takeUntil } from 'rxjs';
 import { ProductFilters } from '../../../../core/models/product.model';
+import { TranslationService } from '../../../../core/services/translation.service';
 
 /**
  * ProductFiltersComponent
@@ -45,7 +46,8 @@ export class ProductFiltersComponent implements OnInit, OnDestroy {
     modesty: false
   };
 
-  constructor(private fb: FormBuilder) {}
+  private fb = inject(FormBuilder);
+  public translationService = inject(TranslationService);
 
   ngOnInit(): void {
     this.buildForm();
@@ -153,6 +155,10 @@ export class ProductFiltersComponent implements OnInit, OnDestroy {
       opacity: [],
       slitCoverage: []
     });
+  }
+
+  translate(key: string, params?: Record<string, any>): string {
+    return this.translationService.translate(key, params);
   }
 
   getColorValue(colorName: string): string {
